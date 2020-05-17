@@ -3,6 +3,7 @@ Created on May 2, 2020
 
 @author: Tyler Liu
 '''
+import math
 import requests
 import pandas as pd
 import io
@@ -13,18 +14,18 @@ cutOffBarrelPercentile = 0.7
 
 def findLowWobaPlayers():
     expectedHitting = statcast_batter_expectedHitting(2019, 100)
-    row = cutOffWobaPercentile*len(expectedHitting.index)
-    result = expectedHitting[['last_name','first_name','woba']].sort_values(by='woba', inplace=True)
-    return result[row:]
+    row = math.ceil(cutOffWobaPercentile*len(expectedHitting.index))
+    result = expectedHitting[['last_name','first_name','woba']].sort_values(by='woba')
+    return result[:row]
 
 def findHighExitVeloPlayers(launchInfo):
-    row = cutOffExitVeloPercentile*len(launchInfo.index)
-    result = launchInfo[['last_name', 'first_name', 'avg_hit_speed']].sort_values(by='avg_hit_speed', inplace=True)
+    row = math.ceil(cutOffExitVeloPercentile*len(launchInfo.index))
+    result = launchInfo[['last_name', 'first_name', 'avg_hit_speed']].sort_values(by='avg_hit_speed')
     return result[row:]
 
 def findHighBarrelPlayers(launchInfo):
-    row = cutOffBarrelPercentile*len(launchInfo.index)
-    result = launchInfo[['last_name', 'first_name', 'brl_percent']].sort_values(by='brl_percent', inplace=True)
+    row = math.ceil(cutOffBarrelPercentile*len(launchInfo.index))
+    result = launchInfo[['last_name', 'first_name', 'brl_percent']].sort_values(by='brl_percent')
     return result[row:]
 
 def statcast_batter_exitVeloBarrels(year, minBBE="q"):
